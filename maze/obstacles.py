@@ -10,7 +10,7 @@ def reset_obs():
 
 def get_obstacles():
     global obs_history
-      
+    ## generate grid, use grid to create obstacle points  
     
     return obs_history
 
