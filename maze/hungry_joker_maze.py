@@ -1,7 +1,36 @@
 import random
 
+MAZE_HEIGHT = 400
+MAZE_WIDTH = 200
+CELL_SIZE = 5
+
 obs_history = []
 
+
+def create_base_grid()->list:
+    rows = MAZE_HEIGHT//CELL_SIZE
+    cols = MAZE_WIDTH//CELL_SIZE
+    
+    grid = [[0 for _ in range(cols)] for _ in range(rows)]
+    
+    return grid
+
+
+def create_turtle_coordinate_grid():
+    x_ranges = range(-(MAZE_WIDTH//2), MAZE_WIDTH//2, 5)
+    y_ranges = range(MAZE_HEIGHT//2, -(MAZE_HEIGHT//2), -5)
+    grid = []
+    
+    for i in y_ranges:
+        coods = []
+        for j in x_ranges:
+            positions = (j,i)
+            coods.append(positions)
+        grid.append(coods)
+        
+    
+    return grid
+            
 
 def reset_obs():
     global obs_history
@@ -9,12 +38,9 @@ def reset_obs():
     obs_history = []
 
 def get_obstacles():
-    global obs_history
-    random_range = random.randint(1,10)
-    for i in range(random_range):
-        x = random.randint(-100,101)
-        y = random.randint(-200,201)
-        obs_history.append((x,y))
+    
+    # - get algorithm to generate 1's in base grid, map to turt grid
+    
     
     return obs_history
 
