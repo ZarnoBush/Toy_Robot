@@ -2,7 +2,7 @@ import random
 
 MAZE_HEIGHT = 400
 MAZE_WIDTH = 200
-CELL_SIZE = 5
+CELL_SIZE = 10
 
 obs_history = []
 
@@ -16,9 +16,19 @@ def create_base_grid()->list:
     return grid
 
 
+def modify_base_grid():
+    grid = create_base_grid()
+    for row in range(len(grid)):
+        for col in range(row):
+            if row == MAZE_HEIGHT//2 and col == MAZE_WIDTH//2:
+                grid[row][col] = 0
+            
+    ...
+
+
 def create_turtle_coordinate_grid():
-    x_ranges = range(-(MAZE_WIDTH//2), MAZE_WIDTH//2, 5)
-    y_ranges = range(MAZE_HEIGHT//2, -(MAZE_HEIGHT//2), -5)
+    x_ranges = range(-(MAZE_WIDTH//2), MAZE_WIDTH//2, CELL_SIZE)
+    y_ranges = range(MAZE_HEIGHT//2, -(MAZE_HEIGHT//2), -CELL_SIZE)
     grid = []
     
     for i in y_ranges:
