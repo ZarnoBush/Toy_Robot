@@ -1,7 +1,7 @@
 import random
 
-MAZE_HEIGHT = 40
-MAZE_WIDTH = 20
+MAZE_HEIGHT = 400
+MAZE_WIDTH = 400
 CELL_SIZE = 10
 
 obs_history = []
@@ -19,19 +19,21 @@ def create_base_grid()->list:
 def modify_base_grid():
     grid = create_base_grid()
     jumper_for_decline = 0
-    jumper_for_incline = 0
+    last_col = len(grid[0])
+    length_of_row = len(grid[0])
+    end = 0
     for row in range(len(grid)):
-        for col in range(row):
-            # grid[row%2==0][col+jumper_for_decline] = 1
-            if row%2==0:
-                grid[row][col+jumper_for_decline] = 1
-                grid[row][col+jumper_for_incline] = 1
+        if row%2==0 and row < length_of_row//2:
+            for col in range(jumper_for_decline, last_col+end):
+                grid[row][col] = 1
                 
             
+        
                 
+            end -= 2
+            jumper_for_decline+=2
             
-        jumper_for_decline+=2
-            
+    return grid
 
 
 def create_turtle_coordinate_grid():
