@@ -1,7 +1,7 @@
 import turtle
 from turtle import Screen
-from maze import obstacles
-from maze import hungry_joker_maze
+# from maze import obstacles
+from maze import hungry_joker_maze as obstacles
 import random
 
 
@@ -29,9 +29,9 @@ def name_turtle(name):
     
 def generate_obstacles():
     # coods = obstacles.get_obstacles()
-    coods = hungry_joker_maze.get_obstacles()
+    coods = obstacles.get_obstacles()
     for o in coods:
-        print(f"Co-od in list: {o[0]}: {o[1]}")
+        print(o)
     
 
     if len(coods) > 0:
@@ -42,13 +42,10 @@ def generate_obstacles():
         jimmy.pen(pencolor='black')
         jimmy.fillcolor('green')
         # random_int = random.randint(0,endpoint)
-        for i in range(len(coods)):
-            x,y = coods[i][0],coods[i][1]
-            
-            print(x,y)
+        for i in coods:
+            x,y = i
             jimmy.pu()
             jimmy.goto(x,y)
-            print(jimmy.pos())
             jimmy.begin_fill()
             for j in range(20):
                 jimmy.pd()
@@ -180,7 +177,7 @@ def back_command(direction,name,number_of_steps,silence, sprinting,x,y):
             display_current_coordinates(x,y, name)
         return x,y
     
-    if obstacles.is_position_blocked(x,y) or obstacles.is_path_blocked(x1,y1,x,y):
+    if obstacles.is_position_blocked(x,y) and obstacles.is_path_blocked(x1,y1,x,y):
         print("There is an obstacle in the way")
         if not silence:
             print(f" > {name} moved forward by {number_of_steps} steps.")

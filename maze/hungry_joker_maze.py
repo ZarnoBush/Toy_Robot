@@ -1,3 +1,6 @@
+import random
+
+
 MAZE_HEIGHT = 420
 MAZE_WIDTH = 420
 CELL_SIZE = 20
@@ -62,9 +65,10 @@ def modify_base_grid():
             
     ## hard-code opening in the middle
     grid[10][10] = 0
+    grid = place_extra_walls(grid)
 
 
-    return grid
+    return randomize_pathways(grid)
 
 
 def create_turtle_coordinate_grid():
@@ -82,6 +86,68 @@ def create_turtle_coordinate_grid():
         
     
     return grid
+
+
+def randomize_pathways(grid):
+    
+    ran_range = 0
+    start = 0
+    stop = len(grid[0])-1
+    
+    for row in range(len(grid)):
+        if row == 0 or row == len(grid)-1:
+            
+            ran_range = random.randint(start+1, stop-1)
+            grid[row][ran_range] = 0
+            
+        if row == 2 or row == stop-2:
+            
+            ran_range = random.randint(start+3, stop-4)
+            grid[row][ran_range] = 0
+            
+        if row == 4 or row == stop-4:
+            
+            ran_range = random.randint(start+5, stop-5)
+            grid[row][ran_range] = 0
+            
+        if row == 6 or row == stop-6:
+            
+            ran_range = random.randint(start+7, stop-7)
+            grid[row][ran_range] = 0
+            
+        if row == 8 or row == stop - 8:
+            ran_range = random.randint(start+9, stop-9)
+            grid[row][ran_range] = 0
+            
+            
+    return grid
+
+
+def place_extra_walls(grid):
+    
+    ran_range = 0
+    start = 1
+    stop = len(grid[0])-1
+    range_start = 2
+    range_end = len(grid[0])-3
+    swap = 0
+    
+    for row in range(len(grid)):
+        if row == 1 or row == stop-1:
+            ran_range = random.randint(start+2, stop-2)
+            grid[row][ran_range] = 1
+            
+        if row == 3 or row == stop-3:
+            ran_range = random.randint(start+5, stop-5)
+            grid[row][ran_range] = 1
+                
+            
+    return grid
+            
+        
+            
+        
+            
 
 
 def map_blueprint_to_turtle_grid():
@@ -117,12 +183,11 @@ def get_obstacles():
 
         
 def is_position_blocked(x,y):
+    
     global obs_history
-    
-    
-        
     for obs in obs_history:
-        if ((x in range(obs[0], obs[0]+20)) and (y in range(obs[1],obs[1]+21))): return True
+        
+        if ((x in range(obs[0], obs[0]+21)) and (y in range(obs[1]-20,obs[1]+1))): return True
     return False
 
 
