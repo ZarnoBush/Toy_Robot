@@ -1,15 +1,17 @@
-import random
+MAZE_HEIGHT = 420
+MAZE_WIDTH = 420
+CELL_SIZE = 20
+rows = MAZE_HEIGHT//CELL_SIZE
+cols = MAZE_WIDTH//CELL_SIZE
+y_ranges = range((MAZE_HEIGHT//2), -(MAZE_HEIGHT//2), -20)
 
-MAZE_HEIGHT = 400
-MAZE_WIDTH = 400
-CELL_SIZE = 10
+x_ranges = range(-(MAZE_WIDTH//2), (MAZE_WIDTH//2)+1, 20)
+
 
 obs_history = []
 
 
 def create_base_grid()->list:
-    rows = MAZE_HEIGHT//CELL_SIZE
-    cols = MAZE_WIDTH//CELL_SIZE
     
     grid = [[0 for _ in range(cols)] for _ in range(rows)]
     
@@ -18,39 +20,86 @@ def create_base_grid()->list:
 
 def modify_base_grid():
     grid = create_base_grid()
-    jumper_for_decline = 0
-    last_col = len(grid[0])
     length_of_row = len(grid[0])
-    end = 0
+    median_of_grid = (rows+1)//2
+    start_x = 0
+    end_x = 0
+    start_y = median_of_grid-3
+    end_y = median_of_grid+2
+    start_z = 0
+    end_z = len(grid)-1
+    column_stretcher = 0
+    column_shrinker = len(grid)-1
+    mid_point = CELL_SIZE//2
+    
+    
     for row in range(len(grid)):
-        if row%2==0 and row < length_of_row//2:
-            for col in range(jumper_for_decline, last_col+end):
+        if row%2==0 and row < median_of_grid:
+            square_range = range(start_x,length_of_row+end_x)
+            for col in square_range:
                 grid[row][col] = 1
                 
+            start_x+=2
+            end_x-=2
             
-        
+        elif row%2==0 and row > median_of_grid:
+            square_range = range(start_y, end_y)
+            for col in square_range:
+                grid[row][col] = 1
                 
-            end -= 2
-            jumper_for_decline+=2
+            start_y-=2
+            end_y+=2
             
+        if row%2==0:
+            for z in range(start_z, end_z):
+                grid[z][column_stretcher] = 1
+                grid[z][column_shrinker] = 1
+                
+            start_z+=2
+            end_z-=2
+            column_stretcher+=2
+            column_shrinker-=2
+            
+    ## hard-code opening in the middle
+    grid[10][10] = 0
+
+
     return grid
 
 
 def create_turtle_coordinate_grid():
-    x_ranges = range(-(MAZE_WIDTH//2), MAZE_WIDTH//2, CELL_SIZE)
-    y_ranges = range(MAZE_HEIGHT//2, -(MAZE_HEIGHT//2), -CELL_SIZE)
     grid = []
+    
     
     for i in y_ranges:
         coods = []
         for j in x_ranges:
             positions = (j,i)
             coods.append(positions)
+            
         grid.append(coods)
+
         
     
     return grid
-            
+
+
+def map_blueprint_to_turtle_grid():
+    
+    blueprint = modify_base_grid()
+    turtle_grid = create_turtle_coordinate_grid()
+    print("turtle grid info")
+
+    gets = []
+
+    
+    for i in range(rows):
+        for j in range(cols):
+            if blueprint[i][j] == 1:
+                gets.append(turtle_grid[i][j])
+    
+    return gets
+                
 
 def reset_obs():
     global obs_history
@@ -60,15 +109,20 @@ def reset_obs():
 def get_obstacles():
     
     # - get algorithm to generate 1's in base grid, map to turt grid
-    
+    global obs_history
+    obs_history = map_blueprint_to_turtle_grid()
+
     
     return obs_history
 
         
 def is_position_blocked(x,y):
     global obs_history
+    
+    
+        
     for obs in obs_history:
-        if ((x in range(obs[0], obs[0]+5)) and (y in range(obs[1],obs[1]+5))): return True
+        if ((x in range(obs[0], obs[0]+20)) and (y in range(obs[1],obs[1]+21))): return True
     return False
 
 

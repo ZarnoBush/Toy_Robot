@@ -3,8 +3,8 @@ import sys
 if len(sys.argv) > 1:
     if sys.argv[1] == 'turtle':
         import world.turtle.world as world
-        # import world.obstacles as obstacles
-        world.draw_game_boundaries()
+        import maze.hungry_joker_maze as obstacles
+        # world.draw_game_boundaries()
         
     else:
         # import world.obstacles as obstacles

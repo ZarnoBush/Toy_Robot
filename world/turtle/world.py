@@ -1,6 +1,7 @@
 import turtle
 from turtle import Screen
-from world import obstacles
+from maze import obstacles
+from maze import hungry_joker_maze
 import random
 
 
@@ -24,28 +25,40 @@ def name_turtle(name):
     
     game_window.title(name)
     
+
     
 def generate_obstacles():
-    coods = obstacles.get_obstacles()
-    endpoint = len(coods)
+    # coods = obstacles.get_obstacles()
+    coods = hungry_joker_maze.get_obstacles()
+    for o in coods:
+        print(f"Co-od in list: {o[0]}: {o[1]}")
     
+
     if len(coods) > 0:
         jimmy = turtle.Turtle()
+        
+        jimmy.speed(0)
         jimmy.ht()
         jimmy.pen(pencolor='black')
         jimmy.fillcolor('green')
-        random_int = random.randint(0,endpoint)
-        for i in range(random_int):
-            x,y = coods[i]
+        # random_int = random.randint(0,endpoint)
+        for i in range(len(coods)):
+            x,y = coods[i][0],coods[i][1]
+            
+            print(x,y)
             jimmy.pu()
             jimmy.goto(x,y)
+            print(jimmy.pos())
             jimmy.begin_fill()
-            for j in range(4):
+            for j in range(20):
                 jimmy.pd()
-                jimmy.fd(4)
-                jimmy.lt(90)
+                jimmy.fd(20)
+                jimmy.rt(90)
                 
             jimmy.end_fill()
+            
+            
+        
                 
         
 
@@ -94,7 +107,7 @@ def update_x_negative_axis(name,number_of_steps, x,y):
 
 def check_coordinates_in_range(x,y):
     """ Checks if coordinates are in valid range. """
-    if x in range(-100,100) and y in range(-200,200): return True
+    if x in range(-210,210) and y in range(-210,210): return True
     return False
 
 
