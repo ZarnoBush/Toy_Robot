@@ -65,7 +65,7 @@ def modify_base_grid():
             
     ## hard-code opening in the middle
     grid[10][10] = 0
-    grid = place_extra_walls(grid)
+    # grid = place_extra_walls(grid)
 
 
     return randomize_pathways(grid)
@@ -87,12 +87,7 @@ def create_turtle_coordinate_grid():
     
     return grid
 
-
-def randomize_pathways(grid):
-    
-    ran_range = 0
-    start = 0
-    stop = len(grid[0])-1
+def randomize_pathways_vertically(ran_range, start, stop, grid):
     
     for row in range(len(grid)):
         if row == 0 or row == len(grid)-1:
@@ -119,36 +114,81 @@ def randomize_pathways(grid):
             ran_range = random.randint(start+9, stop-9)
             grid[row][ran_range] = 0
             
-            
     return grid
 
 
-def place_extra_walls(grid):
+def swap_vals(val1, val2):
+    
+    if val2 < val1:
+        return val2, val1
+    
+    return val1, val2
+
+def randomize_pathways_horizontally(ran_range, start, stop, grid):
+            
+    new_range = [i for i in range(start+1, stop, 2)]
+    shuffle = []
+    while new_range != []:
+        i = random.randint(0, len(new_range)-1)
+        shuffle.append(new_range[i])
+        new_range.pop(i)
+
+    pos_col = 0
+    neg_col = stop
+    
+    for i in shuffle:
+        
+        grid[i][pos_col] = 0
+        pos_col+=2
+        if pos_col==10:
+            break
+    
+    
+    neg_shuffle = []
+    while shuffle != []:
+        i = random.randint(0, len(shuffle)-1)
+        neg_shuffle.append(shuffle[i])
+        shuffle.pop(i)
+        
+    for i in neg_shuffle:
+    
+        grid[i][neg_col] = 0
+        neg_col-=2
+        if neg_col == 12:
+            break
+        
+
+
+            
+    return grid
+
+            
+
+def randomize_pathways(grid):
     
     ran_range = 0
-    start = 1
+    start = 0
     stop = len(grid[0])-1
-    range_start = 2
-    range_end = len(grid[0])-3
-    swap = 0
     
-    for row in range(len(grid)):
-        if row == 1 or row == stop-1:
-            ran_range = random.randint(start+2, stop-2)
-            grid[row][ran_range] = 1
-            
-        if row == 3 or row == stop-3:
-            ran_range = random.randint(start+5, stop-5)
-            grid[row][ran_range] = 1
-                
-            
+    grid = randomize_pathways_vertically(ran_range, start, stop, grid)
+    grid_h = randomize_pathways_horizontally(ran_range, start, stop, grid)
+     
+
+    return grid_h
+
+
+# def place_extra_walls(grid):
+    
+#     x = 0
+#     y = len(grid)-1
+    
+#     for row in range(len(grid)):
+        
+#         ran_range = random.randint(x,y)
+#         grid[ran_range][col_jump]
+
     return grid
             
-        
-            
-        
-            
-
 
 def map_blueprint_to_turtle_grid():
     
@@ -176,7 +216,13 @@ def get_obstacles():
     
     # - get algorithm to generate 1's in base grid, map to turt grid
     global obs_history
-    obs_history = map_blueprint_to_turtle_grid()
+    grid = map_blueprint_to_turtle_grid()
+    c = 0
+    while grid != []:
+        i = random.randint(0,len(grid)-1)
+        obs_history.append(grid[i])
+        grid.pop(i)
+    
 
     
     return obs_history

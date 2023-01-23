@@ -1,8 +1,10 @@
 import turtle
+import turtle as jimmy
 from turtle import Screen
 # from maze import obstacles
 from maze import hungry_joker_maze as obstacles
 import random
+
 
 
 WIDTH, HEIGHT = 698,760
@@ -20,6 +22,7 @@ game_window.setup(WIDTH, HEIGHT)
 t.pen(pencolor = 'black',fillcolor='green' ,pensize = 4)
 t.penup()
 
+
 def name_turtle(name):
     
     
@@ -33,9 +36,10 @@ def generate_obstacles():
     for o in coods:
         print(o)
     
-
+    
     if len(coods) > 0:
-        jimmy = turtle.Turtle()
+        jimmy.tracer(1,0)
+
         
         jimmy.speed(0)
         jimmy.ht()
@@ -47,12 +51,16 @@ def generate_obstacles():
             jimmy.pu()
             jimmy.goto(x,y)
             jimmy.begin_fill()
-            for j in range(20):
+            for j in range(4):
                 jimmy.pd()
                 jimmy.fd(20)
                 jimmy.rt(90)
                 
             jimmy.end_fill()
+            
+    jimmy.update()
+    # jimmy.tracer(1,0)
+    
             
             
         

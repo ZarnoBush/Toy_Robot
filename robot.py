@@ -1,9 +1,11 @@
 import sys
+import import_helper
 
 if len(sys.argv) > 1:
     if sys.argv[1] == 'turtle':
         import world.turtle.world as world
-        import maze.hungry_joker_maze as obstacles
+        
+        # import maze.hungry_joker_maze as obstacles
         # world.draw_game_boundaries()
         
     else:
@@ -142,12 +144,16 @@ def run_commands():
     history = get_history()
     full_command = ''
     name = name_the_robot()
+    obstacles = import_helper.dynamic_import(f"maze.{sys.argv[2]}")
+    print(f"Loading {obstacles}")
     obstacles.reset_obs()
     if len(sys.argv) > 1 and sys.argv[1] == 'turtle':
-        world.name_turtle(name)
+        world.name_turtle(obstacles)
     
     if obstacles.get_obstacles != []:
         world.generate_obstacles()
+        
+    
 
     while True:
         if index not in range(-3,4): index = 0
