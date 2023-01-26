@@ -3,8 +3,7 @@ import turtle as jimmy
 from turtle import Screen
 # from maze import obstacles
 from maze import hungry_joker_maze as obstacles
-import random
-
+from maze import maze_solver
 
 
 WIDTH, HEIGHT = 698,760
@@ -17,7 +16,6 @@ VALID_REPLAY_COMMANDS = ['silent', 'reversed', 'reversed silent']
 game_window = Screen()
 t = turtle.Turtle()
 t.setheading(90)
-# game_window.bgpic('nnn.png')
 game_window.setup(WIDTH, HEIGHT)
 t.pen(pencolor = 'black',fillcolor='green' ,pensize = 4)
 t.penup()
@@ -25,13 +23,11 @@ t.penup()
 
 def name_turtle(name):
     
-    
     game_window.title(name)
     
 
-    
 def generate_obstacles():
-    # coods = obstacles.get_obstacles()
+
     coods = obstacles.get_obstacles()
     for o in coods:
         print(o)
@@ -319,3 +315,9 @@ def draw_game_boundaries():
         boundary.fd(420)
         boundary.lt(90)
 
+
+def maze_run(direction, current_position):
+    
+    intructions = maze_solver.get_instructions()
+    
+    

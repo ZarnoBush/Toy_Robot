@@ -1,17 +1,40 @@
 import random
+import maze_solver
+from robot import get_points
 
-
+start, end = get_points()
 MAZE_HEIGHT = 420
 MAZE_WIDTH = 420
 CELL_SIZE = 20
 rows = MAZE_HEIGHT//CELL_SIZE
 cols = MAZE_WIDTH//CELL_SIZE
 y_ranges = range((MAZE_HEIGHT//2), -(MAZE_HEIGHT//2), -20)
-
 x_ranges = range(-(MAZE_WIDTH//2), (MAZE_WIDTH//2)+1, 20)
 
 
 obs_history = []
+
+v_edges = []
+right_edge = []
+left_edge = []
+
+
+def get_edges():
+    
+    top, bottom = v_edges[0], v_edges[-1]
+    left = left_edge[0]
+    right = right_edge[0]
+    
+    edges = {
+        "top": top,
+        "bottom": bottom,
+        "left": left,
+        "right": right
+    }
+    
+    if end in edges:
+        return edges.get(end)
+
 
 
 def create_base_grid()->list:
@@ -94,6 +117,7 @@ def randomize_pathways_vertically(ran_range, start, stop, grid):
             
             ran_range = random.randint(start+1, stop-1)
             grid[row][ran_range] = 0
+            v_edges.append((row, ran_range))
             
         if row == 2 or row == stop-2:
             
@@ -139,6 +163,7 @@ def randomize_pathways_horizontally(ran_range, start, stop, grid):
     for i in shuffle:
         
         grid[i][pos_col] = 0
+        left_edge.append((i,pos_col))
         pos_col+=2
         if pos_col==10:
             break
@@ -153,13 +178,11 @@ def randomize_pathways_horizontally(ran_range, start, stop, grid):
     for i in neg_shuffle:
     
         grid[i][neg_col] = 0
+        right_edge.append((i,neg_col))
         neg_col-=2
         if neg_col == 12:
             break
-        
 
-
-            
     return grid
 
             
@@ -177,17 +200,7 @@ def randomize_pathways(grid):
     return grid_h
 
 
-# def place_extra_walls(grid):
-    
-#     x = 0
-#     y = len(grid)-1
-    
-#     for row in range(len(grid)):
-        
-#         ran_range = random.randint(x,y)
-#         grid[ran_range][col_jump]
 
-    return grid
             
 
 def map_blueprint_to_turtle_grid():
@@ -216,16 +229,17 @@ def get_obstacles():
     
     # - get algorithm to generate 1's in base grid, map to turt grid
     global obs_history
-    grid = map_blueprint_to_turtle_grid()
-    c = 0
+    grid, blueprint = map_blueprint_to_turtle_grid()
+    
+    
     while grid != []:
         i = random.randint(0,len(grid)-1)
         obs_history.append(grid[i])
         grid.pop(i)
     
 
-    
-    return obs_history
+    instructions = maze_solver.get_instructions(blueprint, start, end)
+    return obs_history, instructions
 
         
 def is_position_blocked(x,y):
@@ -265,3 +279,8 @@ def is_path_blocked(x1,y1, x2, y2):
              
                     
     return path_blocked
+
+
+
+
+    

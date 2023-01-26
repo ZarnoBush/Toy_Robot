@@ -126,7 +126,12 @@ BACK - moves robot back
 RIGHT - turns robot right
 LEFT - turns robot left"""
 
-
+def get_points(end,x,y):
+    
+    start = (x,y)
+    end = end
+    
+    return start, end
 
 def off_command(name):
     """ Prints out shutting down. """
