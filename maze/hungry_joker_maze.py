@@ -1,8 +1,8 @@
 import random
-import maze_solver
-from robot import get_points
+from . import maze_solver
 
-start, end = get_points()
+
+
 MAZE_HEIGHT = 420
 MAZE_WIDTH = 420
 CELL_SIZE = 20
@@ -19,7 +19,7 @@ right_edge = []
 left_edge = []
 
 
-def get_edges():
+def get_edges(end):
     
     top, bottom = v_edges[0], v_edges[-1]
     left = left_edge[0]
@@ -34,6 +34,8 @@ def get_edges():
     
     if end in edges:
         return edges.get(end)
+    
+    return None
 
 
 
@@ -217,13 +219,15 @@ def map_blueprint_to_turtle_grid():
             if blueprint[i][j] == 1:
                 gets.append(turtle_grid[i][j])
     
-    return gets
+    return gets,blueprint
                 
 
 def reset_obs():
     global obs_history
     
     obs_history = []
+    
+
 
 def get_obstacles():
     
@@ -238,8 +242,7 @@ def get_obstacles():
         grid.pop(i)
     
 
-    instructions = maze_solver.get_instructions(blueprint, start, end)
-    return obs_history, instructions
+    return obs_history, blueprint
 
         
 def is_position_blocked(x,y):
@@ -280,7 +283,3 @@ def is_path_blocked(x1,y1, x2, y2):
                     
     return path_blocked
 
-
-
-
-    

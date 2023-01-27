@@ -7,13 +7,15 @@ VALID_REPLAY_COMMANDS = ['silent', 'reversed', 'reversed silent']
 
 
 def generate_obstacles():
-    coods = obstacles.get_obstacles()
+    coods, blueprint = obstacles.get_obstacles()
     
     if coods != []:
         print("There are some obstacles:")
         for i in range(len(coods)):
             x,y = coods[i]
             print(f"- At position {x},{y} (to {x+4},{y+4})")
+            
+    return coods, blueprint
 
 
 def change_direction(index):

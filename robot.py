@@ -1,5 +1,7 @@
 import sys
 import import_helper
+from maze import maze_solver
+from maze.hungry_joker_maze import get_edges
 
 if len(sys.argv) > 1:
     if sys.argv[1] == 'turtle':
@@ -17,10 +19,11 @@ else:
     import world.text.world as world
 
 
-VALID_COMMANDS = ['off', 'help', 'forward', 'back', 'right', 'left', 'sprint', 'replay', 'replay range']
+VALID_COMMANDS = ['off', 'help', 'forward', 'back', 'right', 'left', 'sprint', 'replay', 'replay range', 'mazerun']
 VALID_MOVEMENT = ['forward', 'back','sprint', 'replay']
 COMPASS = ['N', 'E', 'S', 'W']
 VALID_REPLAY_COMMANDS = ['silent', 'reversed', 'reversed silent']
+SOLVE_DIRS = ["top", "bottom", "left", "right"]
 
 
 def robot_start():
@@ -69,6 +72,10 @@ def validate_command(command):
                 (len(command.split()) == 2): return True
             if (command.split()[0].lower() in VALID_MOVEMENT) and command.split()[1].split('-')[0].isdigit() and \
                 command.split()[1].split('-')[1].isdigit(): return True
+            
+            if command.split()[0].lower() == 'mazerun' and command.split()[1].lower() in SOLVE_DIRS:
+                return True
+            
                 
         if len(command.split()) == 3:   
             if (command.split()[0].lower() in VALID_COMMANDS and \
@@ -101,6 +108,9 @@ def command_parse(command, length):
             command, number_of_steps = split_command
             return command.lower(), number_of_steps
         
+        if split_command[0].lower() == 'mazerun' and split_command[1].lower() in SOLVE_DIRS:
+            return split_command[0].lower(), split_command[1].lower()
+        
     if length == 3:
         if (command.split()[0].lower() in VALID_COMMANDS and \
             (command.split()[-1].lower()) in VALID_REPLAY_COMMANDS) and \
@@ -126,12 +136,11 @@ BACK - moves robot back
 RIGHT - turns robot right
 LEFT - turns robot left"""
 
-def get_points(end,x,y):
+
+
+            
+
     
-    start = (x,y)
-    end = end
-    
-    return start, end
 
 def off_command(name):
     """ Prints out shutting down. """
@@ -155,8 +164,9 @@ def run_commands():
     if len(sys.argv) > 1 and sys.argv[1] == 'turtle':
         world.name_turtle(obstacles)
     
-    if obstacles.get_obstacles != []:
-        world.generate_obstacles()
+    
+    call_obstacles, grid = world.generate_obstacles()
+
         
     
 
@@ -226,6 +236,14 @@ def run_commands():
                 x,y = world.replay_command_basic(history, list_of_functions, current_direction,name,number_of_steps,x,y, silence, reverse)
             if number_of_steps != '':
                 x,y = world.replay_command_range(history, list_of_functions, current_direction,name,number_of_steps,x,y, silence, reverse, number_of_steps)
+                
+        elif command == 'mazerun':
+            if number_of_steps in ['top', 'bottom', 'left', 'right']:
+                goto = number_of_steps
+                
+            else:
+                goto = 'top'
+            world.maze_runner(index,updated_direction,name,x,y, grid, goto)
 
 
 

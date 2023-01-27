@@ -1,8 +1,4 @@
 import queue
-import import_helper
-import sys
-import hungry_joker_maze
-
 
 
 def keep_visited_history(visited, node):
@@ -91,7 +87,7 @@ def solver(prev, end, start):
             if end in value:
                 end = key
                 path_list.append(end)
-                
+    
 
     return list(reversed(path_list))
 
@@ -101,12 +97,10 @@ def get_path(grid, start, end):
     graph = generate_graph(grid, start, end)
     if graph != {}:
         coordinate_path = solver(graph, end, start)
+
         
-    else:
-        coordinate_path = []
         
-    if coordinate_path != []:
-    
+        
         node = coordinate_path[0]
         x,y = node
         instructions = []
@@ -130,12 +124,12 @@ def get_path(grid, start, end):
             indexer+=1
             
         return instructions
+    
+    return []
 
-            
-    else:
-        return []
         
 def get_instructions(grid,start, end):
+
 
     instructions = get_path(grid, start, end)
     

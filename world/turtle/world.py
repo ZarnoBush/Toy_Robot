@@ -26,9 +26,112 @@ def name_turtle(name):
     game_window.title(name)
     
 
+def maze_runner(index,direction,name,x,y, grid, goto):
+    
+    if goto == '':
+        end = obstacles.get_edges('top')
+    
+    else:
+        end = obstacles.get_edges(goto)
+    
+    
+    
+    instructions = maze_solver.get_instructions(grid, (10,10), end)
+    curr_direction = direction
+    next = 0
+
+    if instructions != []:
+        print(f"{name} starting maze run..")
+        while instructions != []:
+            if index not in range(-3,4): index = 0
+            print(instructions[0])
+            if instructions[next] == 'Up':
+                if direction == 'N':
+                    x,y = forward_command(curr_direction, name, 20, False, False, x,y)
+                elif direction == 'E':
+                    index-=1
+                    curr_direction = left_turn_command(index, name, x,y)
+                    x,y = forward_command(curr_direction, name, 20, False, False, x,y)
+                elif direction == 'W':
+                    index+=1
+                    curr_direction = right_turn_command(index, name, x,y)
+                    x,y = forward_command(curr_direction, name, 20, False, False,x, y)
+                    
+                elif direction == 'S':
+                    index-=2
+                    curr_direction = left_turn_command(index, name, x,y)
+                    x,y = forward_command(curr_direction, name, 20, False, False, x,y)
+                
+            elif instructions[next] == 'Left':
+                if direction == 'N':
+                    index-=1
+                    curr_direction = left_turn_command(index, name, x, y)
+                    x,y = forward_command(curr_direction, name, 20, False, False, x, y)
+                    
+                elif direction == 'E':
+                    index-=2
+                    curr_direction = left_turn_command(index, name, x, y)
+                    x,y = forward_command(curr_direction, name, 20, False, False, x, y)
+                    
+                elif direction == 'W':
+                    x,y = forward_command(curr_direction, name, 20, False, False, x, y)
+                    
+                elif direction == 'S':
+                    index-=1
+                    curr_direction = left_turn_command(index, name, x, y)
+                    x,y = forward_command(curr_direction, name, 20, False, False, x, y)
+                    
+            elif instructions[next] == 'Right':
+                if direction == 'N':
+                    index+=1
+                    curr_direction = right_turn_command(index,name,x,y)
+                    x,y = forward_command(curr_direction, name, 20, False, False, x, y)
+                    
+                elif direction == 'E':
+                    x,y = forward_command(curr_direction, name, 20, False, False, x, y)
+                
+                elif direction == 'W':
+                    index+=2
+                    curr_direction = right_turn_command(index, name, x,y)
+                    x,y = forward_command(curr_direction, name, 20, False, False, x, y)
+                    
+                elif direction == 'S':
+                    index-=1
+                    curr_direction = left_turn_command(index,name,x,y)
+                    x,y = forward_command(curr_direction, name, 20, False, False, x, y)
+                    
+                    
+            
+            elif instructions[next] == 'Down':
+                if direction == 'N':
+                    index+=2
+                    curr_direction = right_turn_command(index, name, x,y)
+                    x,y = forward_command(curr_direction, name, 20, False, False, x, y)
+                    
+                elif direction == 'E':
+                    index+=1
+                    curr_direction = right_turn_command(index,name,x,y)
+                    x,y = forward_command(curr_direction, name, 20, False, False, x, y)
+                    
+                elif direction == 'W':
+                    index-=1
+                    curr_direction = left_turn_command(index,name,x,y)
+                    x,y = forward_command(curr_direction, name, 20, False, False, x, y)
+                    
+                elif direction == 'S':
+                    x,y = forward_command(curr_direction, name, 20, False, False, x, y)
+                   
+            instructions.pop(0)
+            
+        print("I am at the edge")
+        return True
+    
+    return False
+
+
 def generate_obstacles():
 
-    coods = obstacles.get_obstacles()
+    coods, blueprint = obstacles.get_obstacles()
     for o in coods:
         print(o)
     
@@ -56,6 +159,7 @@ def generate_obstacles():
             
     jimmy.update()
     # jimmy.tracer(1,0)
+    return coods, blueprint
     
             
             
