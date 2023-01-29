@@ -1,9 +1,21 @@
 import turtle
 import turtle as jimmy
 from turtle import Screen
-# from maze import obstacles
-from maze import hungry_joker_maze as obstacles
+import sys
+import import_helper
 from maze import maze_solver
+# from maze import obstacles
+if len(sys.argv) > 1:
+    if len(sys.argv) > 2:
+        obstacles = import_helper.dynamic_import(f"maze.{sys.argv[2]}")
+        
+    else:
+        obstacles = import_helper.dynamic_import("maze.obstacles")
+        
+else:
+    import maze.obstacles as obstacles
+    
+
 
 
 WIDTH, HEIGHT = 698,760
@@ -16,7 +28,9 @@ VALID_REPLAY_COMMANDS = ['silent', 'reversed', 'reversed silent']
 game_window = Screen()
 t = turtle.Turtle()
 t.setheading(90)
+
 game_window.setup(WIDTH, HEIGHT)
+# game_window.bgcolor('black')
 t.pen(pencolor = 'black',fillcolor='green' ,pensize = 4)
 t.penup()
 
@@ -28,15 +42,26 @@ def name_turtle(name):
 
 def maze_runner(index,direction,name,x,y, grid, goto):
     
+    steps = 0
     if goto == '':
         end = obstacles.get_edges('top')
     
     else:
         end = obstacles.get_edges(goto)
+        
+    if len(grid) == 400:
+        start = (199,99)
+        
+        steps = 1
+        
+    else:
+        start = (10,10)
+        steps = 20
     
     
     
-    instructions = maze_solver.get_instructions(grid, (10,10), end)
+    instructions = maze_solver.get_instructions(grid, start, end)
+    print(instructions)
     curr_direction = direction
     next = 0
 
@@ -48,40 +73,44 @@ def maze_runner(index,direction,name,x,y, grid, goto):
             
             if instructions[next] == 'Up':
                 if curr_direction == 'N':
-                    t.forward(20)
+                    t.forward(steps)
                 elif curr_direction == 'E':
                     t.left(90)
                     curr_direction = 'N'
-                    t.forward(20)
+                    t.forward(steps)
                 elif curr_direction == 'W':
                     t.right(90)
                     curr_direction = 'N'
-                    t.forward(20)
+                    t.forward(steps)
                     
                 elif curr_direction == 'S':
-                    t.right(180)
+                    t.right(90)
+                    curr_direction = 'W'
+                    t.right(90)
                     curr_direction = 'N'
-                    t.forward(90)
+                    t.forward(steps)
 
                 
             elif instructions[next] == 'Left':
                 if curr_direction == 'N':
                     t.left(90)
                     curr_direction = 'W'
-                    t.forward(20)
+                    t.forward(steps)
                 
                 elif curr_direction == 'E':
-                    t.left(180)
+                    t.left(90)
+                    curr_direction = 'N'
+                    t.left(90)
                     curr_direction = 'W'
-                    t.forward(20)
+                    t.forward(steps)
                     
                 elif curr_direction == 'W':
-                    t.forward(20)
+                    t.forward(steps)
                 
                 elif curr_direction == 'S':
                     t.right(90)
-                    curr_direction = 'N'
-                    t.forward(20)
+                    curr_direction = 'W'
+                    t.forward(steps)
                     
 
                     
@@ -89,54 +118,49 @@ def maze_runner(index,direction,name,x,y, grid, goto):
                 if curr_direction == 'N':
                     t.right(90)
                     curr_direction = 'E'
-                    t.forward(20)
+                    t.forward(steps)
                     
                 elif curr_direction == 'E':
-                    t.forward(20)
+                    t.forward(steps)
                     
                 elif curr_direction == 'W':
-                    t.right(180)
+                    t.right(90)
+                    curr_direction = 'N'
+                    t.right(90)
                     curr_direction = 'E'
-                    t.forward(20)
+                    t.forward(steps)
                     
                 elif curr_direction == 'S':
                     t.left(90)
                     curr_direction = 'E'
-                    t.forward(20)
-                    
-            
-                    
-            
-                    
-                
-               
-                    
-                    
-            
+                    t.forward(steps)
+
             elif instructions[next] == 'Down':
                 if curr_direction == 'N':
-                    t.right(180)
+                    t.right(90)
+                    curr_direction = 'E'
+                    t.right(90)
                     curr_direction = 'S'
-                    t.forward(20)
+                    t.forward(steps)
                 
                 elif curr_direction == 'E':
                     t.right(90)
                     curr_direction = 'S'
-                    t.forward(20)
+                    t.forward(steps)
                 
                 elif curr_direction == 'W':
                     t.left(90)
                     curr_direction = 'S'
-                    t.forward(20)
+                    t.forward(steps)
                     
                 elif curr_direction == 'S':
-                    t.forward(20)
+                    t.forward(steps)
                     
                 
                    
             instructions.pop(0)
             
-        print("I am at the edge")
+        print(f"I am at the {goto} edge")
         return True
     
     return False
@@ -145,8 +169,8 @@ def maze_runner(index,direction,name,x,y, grid, goto):
 def generate_obstacles():
 
     coods, blueprint = obstacles.get_obstacles()
-    for o in coods:
-        print(o)
+    
+
     
     
     if len(coods) > 0:
@@ -159,13 +183,14 @@ def generate_obstacles():
         jimmy.fillcolor('green')
         # random_int = random.randint(0,endpoint)
         for i in coods:
+            
             x,y = i
             jimmy.pu()
             jimmy.goto(x,y)
             jimmy.begin_fill()
             for j in range(4):
                 jimmy.pd()
-                jimmy.fd(20)
+                jimmy.fd(4) ## change this to 20 for better view of maze
                 jimmy.rt(90)
                 
             jimmy.end_fill()
@@ -427,8 +452,4 @@ def draw_game_boundaries():
         boundary.lt(90)
 
 
-def maze_run(direction, current_position):
-    
-    intructions = maze_solver.get_instructions()
-    
     

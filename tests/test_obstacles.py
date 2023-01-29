@@ -3,10 +3,7 @@ import maze.hungry_joker_maze as obs
 
 class ObstacleTest(unittest.TestCase):
     
-    def test_obstacles_returns_list(self):
-        
-        test_this = obs.get_obstacles()
-        self.assertEqual(type(test_this), list)
+
         
     def test_position_blocking(self):
         

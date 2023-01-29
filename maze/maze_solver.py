@@ -1,4 +1,5 @@
 import queue
+import sys
 
 
 def keep_visited_history(visited, node):
@@ -8,14 +9,30 @@ def keep_visited_history(visited, node):
 
 def is_valid_directions(direction, grid):
     
+    
     x,y = direction ## x is row, y is col
+   
     valid = False
     
-    if x in range(0, len(grid)) and y in range(0, len(grid)):
-        valid = True
+    if len(sys.argv) > 2:
+        if sys.argv[2] == 'hungry_joker_maze':
         
-        if grid[x][y] == 1:
-            valid = False
+            if x in range(0, len(grid)) and y in range(0, len(grid)):
+                valid = True
+                
+                if grid[x][y] == 1:
+                    valid = False
+                
+    else:
+        
+        
+        
+        if y in range(0, len(grid[0])) and x in range(0, len(grid)):
+            valid = True
+            
+            
+            if grid[x][y] == 1:
+                valid = False
         
         
     return valid

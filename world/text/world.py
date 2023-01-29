@@ -1,10 +1,27 @@
-from world import obstacles
+import import_helper
+import sys
+
+if len(sys.argv) > 1:
+    if len(sys.argv) > 2:
+        obstacles = import_helper.dynamic_import(f"maze.{sys.argv[2]}")
+        
+    else:
+        obstacles = import_helper.dynamic_import("maze.obstacles")
+
+else:
+    import maze.obstacles as obstacles
 
 VALID_COMMANDS = ['off', 'help', 'forward', 'back', 'right', 'left', 'sprint', 'replay', 'replay range']
 VALID_MOVEMENT = ['forward', 'back','sprint', 'replay']
 COMPASS = ['N', 'E', 'S', 'W']
 VALID_REPLAY_COMMANDS = ['silent', 'reversed', 'reversed silent']
 
+
+def maze_runner():
+    
+    return
+    
+    
 
 def generate_obstacles():
     coods, blueprint = obstacles.get_obstacles()
@@ -44,7 +61,7 @@ def update_y_positive_axis(name,number_of_steps, x,y):
 def update_y_negative_axis(name,number_of_steps, x,y):
     """ Updates value of y. """
     if check_coordinates_in_range(x, y-number_of_steps):
-        if obstacles.is_position_blocked(x,y - number_of_steps) and \
+        if obstacles.is_position_blocked(x,y - number_of_steps) or \
             obstacles.is_path_blocked(x,y,x,y - number_of_steps):
             print(f"{name}: Sorry, there is an obstacle in the way.")
             return y

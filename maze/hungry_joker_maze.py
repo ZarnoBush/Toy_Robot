@@ -1,7 +1,4 @@
 import random
-from . import maze_solver
-
-
 
 MAZE_HEIGHT = 420
 MAZE_WIDTH = 420
@@ -13,7 +10,6 @@ x_ranges = range(-(MAZE_WIDTH//2), (MAZE_WIDTH//2)+1, 20)
 
 
 obs_history = []
-
 v_edges = []
 right_edge = []
 left_edge = []
@@ -58,7 +54,7 @@ def modify_base_grid():
     end_z = len(grid)-1
     column_stretcher = 0
     column_shrinker = len(grid)-1
-    mid_point = CELL_SIZE//2
+    
     
     
     for row in range(len(grid)):
@@ -207,8 +203,8 @@ def randomize_pathways(grid):
 
 def map_blueprint_to_turtle_grid():
     
-    blueprint = modify_base_grid()
-    turtle_grid = create_turtle_coordinate_grid()
+    blueprint = modify_base_grid() ## grid
+    turtle_grid = create_turtle_coordinate_grid() ## turtle coods
     print("turtle grid info")
 
     gets = []
