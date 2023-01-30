@@ -6,16 +6,13 @@ WIDTH = 200
 
 
 def get_edges(end):
-    
-    
-    
-    
+
     
     edges = {
         "top" : (0,99),
-        "bottom" : (399, 1),
-        "left" : (40,0),
-        "right" : (40, 199)
+        "bottom" : (99, 99),
+        "left" : (199,0),
+        "right" : (199, 199)
     }
     
     if end in edges:
@@ -67,10 +64,8 @@ def get_random_coods():
 def graph_obstacles_to_grid(obs):
     
     grid = basic_blueprint()
-    print(f"Len og grid{len(grid)}")
+
     turt = basic_turtle_grid()
-    print(f"Len og turt{len(turt)}")
-    print(f"obs: {obs}")
         
     for i in range(len(grid)):
         for j in range(len(grid[i])):
@@ -91,12 +86,7 @@ def get_obstacles():
     global obs_history
     
     obs_history = get_random_coods()
-    for i in obs_history:
-        print(f"Obs:{i}")
     blueprint = graph_obstacles_to_grid(obs_history)
-    # for blue in blueprint:
-    #     print(blue)
-
         
     return obs_history, blueprint
 

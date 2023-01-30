@@ -165,7 +165,10 @@ def run_commands():
     #         world.name_turtle(obstacles)
     
     
+    
     call_obstacles, grid = world.generate_obstacles()
+    
+    
 
         
     
@@ -243,7 +246,7 @@ def run_commands():
                 
             else:
                 goto = 'top'
-            world.maze_runner(index,updated_direction,name,x,y, grid, goto)
+            updated_direction, index =  world.maze_runner((x,y),updated_direction,name,grid, goto, index)
 
 
 

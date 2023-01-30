@@ -76,7 +76,6 @@ def generate_graph(grid, start, end):
             neighbours = []
             
             if node == end:
-                print("Reached end")
                 graph[node] = neighbour
                 return graph
                 

@@ -86,8 +86,6 @@ def modify_base_grid():
             
     ## hard-code opening in the middle
     grid[10][10] = 0
-    # grid = place_extra_walls(grid)
-
 
     return randomize_pathways(grid)
 
@@ -205,7 +203,7 @@ def map_blueprint_to_turtle_grid():
     
     blueprint = modify_base_grid() ## grid
     turtle_grid = create_turtle_coordinate_grid() ## turtle coods
-    print("turtle grid info")
+    
 
     gets = []
 

@@ -4,18 +4,18 @@ from turtle import Screen
 import sys
 import import_helper
 from maze import maze_solver
-# from maze import obstacles
+import os
 if len(sys.argv) > 1:
     if len(sys.argv) > 2:
-        obstacles = import_helper.dynamic_import(f"maze.{sys.argv[2]}")
-        
+        if sys.argv[0] == 'robot.py':
+            import maze.hungry_joker_maze as obstacles
+
     else:
-        obstacles = import_helper.dynamic_import("maze.obstacles")
+        import maze.obstacles as obstacles
         
 else:
     import maze.obstacles as obstacles
     
-
 
 
 WIDTH, HEIGHT = 698,760
@@ -30,27 +30,32 @@ t = turtle.Turtle()
 t.setheading(90)
 
 game_window.setup(WIDTH, HEIGHT)
-# game_window.bgcolor('black')
+game_window.bgcolor('black')
 t.pen(pencolor = 'black',fillcolor='green' ,pensize = 4)
 t.penup()
 
+
+def load_world():
+    
+    return obstacles
 
 def name_turtle(name):
     
     game_window.title(name)
     
 
-def maze_runner(index,direction,name,x,y, grid, goto):
+def maze_runner(direction,name,grid, goto):
     
     steps = 0
     if goto == '':
         end = obstacles.get_edges('top')
+        goto = 'top'
     
     else:
         end = obstacles.get_edges(goto)
         
     if len(grid) == 400:
-        start = (199,99)
+        start = (199, 99)
         
         steps = 1
         
@@ -61,7 +66,6 @@ def maze_runner(index,direction,name,x,y, grid, goto):
     
     
     instructions = maze_solver.get_instructions(grid, start, end)
-    print(instructions)
     curr_direction = direction
     next = 0
 
@@ -69,9 +73,11 @@ def maze_runner(index,direction,name,x,y, grid, goto):
         
         print(f"{name} starting maze run..")
         while instructions != []:
-            print(instructions[0])
+            t.pd()
+            t.pencolor("yellow")
             
             if instructions[next] == 'Up':
+                
                 if curr_direction == 'N':
                     t.forward(steps)
                 elif curr_direction == 'E':
@@ -169,19 +175,12 @@ def maze_runner(index,direction,name,x,y, grid, goto):
 def generate_obstacles():
 
     coods, blueprint = obstacles.get_obstacles()
-    
 
-    
-    
     if len(coods) > 0:
-        # jimmy.tracer(1,0)
-
         
         jimmy.speed(0)
         jimmy.ht()
-        jimmy.pen(pencolor='black')
-        jimmy.fillcolor('green')
-        # random_int = random.randint(0,endpoint)
+        jimmy.fillcolor('red')
         for i in coods:
             
             x,y = i
@@ -190,12 +189,12 @@ def generate_obstacles():
             jimmy.begin_fill()
             for j in range(4):
                 jimmy.pd()
-                jimmy.fd(4) ## change this to 20 for better view of maze
-                jimmy.rt(90)
+                jimmy.fd(4) ## change this to 20 if running maze
+                jimmy.lt(90) ## change to rt if running maze
                 
             jimmy.end_fill()
             
-    # jimmy.update()
+
     
     return coods, blueprint
     
@@ -244,7 +243,7 @@ def update_x_negative_axis(name,number_of_steps, x,y):
 
 def check_coordinates_in_range(x,y):
     """ Checks if coordinates are in valid range. """
-    if x in range(-230,231) and y in range(-230,231): return True
+    if x in range(-100,101) and y in range(-200,201): return True
     return False
 
 
@@ -343,8 +342,8 @@ def right_turn_command(index, name, x,y):
     
    
 def left_turn_command(index, name, x,y):
-    t.left(90)
     """ Turns robot to the left. """
+    t.left(90)
     print(f" > {name} turned left.")
     display_current_coordinates(x,y,name)
     return change_direction(index)
@@ -450,6 +449,3 @@ def draw_game_boundaries():
         boundary.lt(90)
         boundary.fd(420)
         boundary.lt(90)
-
-
-    

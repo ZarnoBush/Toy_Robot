@@ -1,15 +1,17 @@
-import import_helper
 import sys
+from maze import maze_solver
 
 if len(sys.argv) > 1:
     if len(sys.argv) > 2:
-        obstacles = import_helper.dynamic_import(f"maze.{sys.argv[2]}")
+        import maze.hungry_joker_maze as obstacles
         
     else:
-        obstacles = import_helper.dynamic_import("maze.obstacles")
+        import maze.obstacles as obstacles
 
 else:
     import maze.obstacles as obstacles
+    
+
 
 VALID_COMMANDS = ['off', 'help', 'forward', 'back', 'right', 'left', 'sprint', 'replay', 'replay range']
 VALID_MOVEMENT = ['forward', 'back','sprint', 'replay']
@@ -17,9 +19,127 @@ COMPASS = ['N', 'E', 'S', 'W']
 VALID_REPLAY_COMMANDS = ['silent', 'reversed', 'reversed silent']
 
 
-def maze_runner():
+def solve_up(direction, name,index,x,y):
+    curr_direction = direction
+    if curr_direction == 'N':
+        x,y = forward_command(direction, name, 1, False, False, x,y)
     
-    return
+    elif curr_direction == 'E':
+        index-=1
+        curr_direction = left_turn_command(index, name, x,y)
+        x,y = forward_command(curr_direction, name, 1, False, False, x,y)
+        
+    elif curr_direction == 'W':
+        index+=1
+        curr_direction = right_turn_command(index,name,x,y)
+        x,y = forward_command(curr_direction, name, 1, False, False, x,y)
+        
+    elif curr_direction == 'S':
+        index-=2
+        curr_direction = left_turn_command(index,name,x,y)
+        x,y = forward_command(direction, name, 1, False, False, x,y)
+    
+    return index, curr_direction, x, y
+
+
+def solve_down(direction, name,index,x,y):
+    curr_direction = direction
+    
+    if curr_direction == 'N':
+        index+=2
+        curr_direction = right_turn_command(index,name,x,y)
+        x,y = forward_command(direction, name, 1, False, False, x,y)
+    
+    elif curr_direction == 'E':
+        index+=1
+        curr_direction = right_turn_command(index, name, x,y)
+        x,y = forward_command(curr_direction, name, 1, False, False, x,y)
+        
+    elif curr_direction == 'W':
+        index-=1
+        curr_direction = left_turn_command(index,name,x,y)
+        x,y = forward_command(curr_direction, name, 1, False, False, x,y)
+        
+    elif curr_direction == 'S':
+        x,y = forward_command(direction, name, 1, False, False, x,y)
+    
+    return index, curr_direction, x, y
+
+
+def solve_left(direction, name, index, x,y):
+    curr_direction = direction
+    
+    if curr_direction == 'N':
+        index-=1
+        curr_direction = left_turn_command(index,name,x,y)
+        x,y = forward_command(direction, name, 1, False, False, x,y)
+    
+    elif curr_direction == 'E':
+        index-=2
+        curr_direction = left_turn_command(index, name, x,y)
+        x,y = forward_command(curr_direction, name, 1, False, False, x,y)
+        
+    elif curr_direction == 'W':
+        x,y = forward_command(curr_direction, name, 1, False, False, x,y)
+        
+    elif curr_direction == 'S':
+        index+=1
+        curr_direction = right_turn_command(curr_direction, name, x,y)
+        x,y = forward_command(direction, name, 1, False, False, x,y)
+    
+    return index, curr_direction, x, y
+    
+
+def solve_right(direction, name, index, x,y):
+    
+    curr_direction = direction
+    
+    if curr_direction == 'N':
+        index+=1
+        curr_direction = right_turn_command(index,name,x,y)
+        x,y = forward_command(direction, name, 5, False, False, x,y)
+    
+    elif curr_direction == 'E':
+        x,y = forward_command(curr_direction, name, 5, False, False, x,y)
+        
+    elif curr_direction == 'W':
+        index+=2
+        curr_direction = right_turn_command(index, name, x,y)
+        x,y = forward_command(curr_direction, name, 5, False, False, x,y)
+        
+    elif curr_direction == 'S':
+        index-=1
+        curr_direction = left_turn_command(curr_direction, name, x,y)
+        x,y = forward_command(direction, name, 5, False, False, x,y)
+    
+    return index, curr_direction, x, y
+    
+
+def maze_runner(origin_point,direction, name, grid, goto,index):
+    
+    start = (24,12) ## middle of obstacle grid
+    x,y = origin_point
+    if goto == '':
+        end = obstacles.get_edges('top')
+        goto = 'top'
+    end = obstacles.get_edges(goto)
+    instructions = maze_solver.get_instructions(grid, start,end)
+    curr_direction = direction
+    
+    while instructions != [] or check_coordinates_in_range(x,y):
+        if instructions[0] == "Up":
+            index, curr_direction, x,y = solve_up(curr_direction, name, index, x,y)
+        elif instructions[0] == 'Down':
+            index, curr_direction, x,y = solve_down(curr_direction, name, index, x,y)
+        elif instructions[0] == 'Left':
+            index, curr_direction, x,y = solve_left(curr_direction, name, index, x,y)
+        elif instructions[0] == 'Right':
+            index, curr_direction, x,y = solve_right(curr_direction, name, index, x,y)
+            
+    print(f"I am at the {goto} edge.")
+    
+    return curr_direction, index
+        
     
     
 
