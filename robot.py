@@ -164,12 +164,10 @@ def run_commands():
     #     if sys.argv[1] == 'turtle':
     #         world.name_turtle(obstacles)
     
-    
-    
+    print(f"{name}: Loaded obstacles.")
     call_obstacles, grid = world.generate_obstacles()
     
     
-
         
     
 

@@ -1,5 +1,6 @@
 import sys
 from maze import maze_solver
+import time
 
 if len(sys.argv) > 1:
     if len(sys.argv) > 2:
@@ -20,113 +21,140 @@ VALID_REPLAY_COMMANDS = ['silent', 'reversed', 'reversed silent']
 
 
 def solve_up(direction, name,index,x,y):
+    steps = 50
     curr_direction = direction
     if curr_direction == 'N':
-        x,y = forward_command(direction, name, 1, False, False, x,y)
+        x,y = forward_command(curr_direction, name, steps, False, False, x,y)
     
     elif curr_direction == 'E':
         index-=1
         curr_direction = left_turn_command(index, name, x,y)
-        x,y = forward_command(curr_direction, name, 1, False, False, x,y)
+        x,y = forward_command(curr_direction, name, steps, False, False, x,y)
         
     elif curr_direction == 'W':
         index+=1
         curr_direction = right_turn_command(index,name,x,y)
-        x,y = forward_command(curr_direction, name, 1, False, False, x,y)
+        x,y = forward_command(curr_direction, name, steps, False, False, x,y)
         
     elif curr_direction == 'S':
         index-=2
         curr_direction = left_turn_command(index,name,x,y)
-        x,y = forward_command(direction, name, 1, False, False, x,y)
+        x,y = forward_command(curr_direction, name, steps, False, False, x,y)
     
     return index, curr_direction, x, y
 
 
 def solve_down(direction, name,index,x,y):
+    steps = 50
     curr_direction = direction
     
     if curr_direction == 'N':
         index+=2
         curr_direction = right_turn_command(index,name,x,y)
-        x,y = forward_command(direction, name, 1, False, False, x,y)
+        x,y = forward_command(curr_direction, name, steps, False, False, x,y)
     
     elif curr_direction == 'E':
         index+=1
         curr_direction = right_turn_command(index, name, x,y)
-        x,y = forward_command(curr_direction, name, 1, False, False, x,y)
+        x,y = forward_command(curr_direction, name, steps, False, False, x,y)
         
     elif curr_direction == 'W':
         index-=1
         curr_direction = left_turn_command(index,name,x,y)
-        x,y = forward_command(curr_direction, name, 1, False, False, x,y)
+        x,y = forward_command(curr_direction, name, steps, False, False, x,y)
         
     elif curr_direction == 'S':
-        x,y = forward_command(direction, name, 1, False, False, x,y)
+        x,y = forward_command(curr_direction, name, steps, False, False, x,y)
     
     return index, curr_direction, x, y
 
 
 def solve_left(direction, name, index, x,y):
+    steps = 50
     curr_direction = direction
     
     if curr_direction == 'N':
         index-=1
         curr_direction = left_turn_command(index,name,x,y)
-        x,y = forward_command(direction, name, 1, False, False, x,y)
+        x,y = forward_command(curr_direction, name, steps, False, False, x,y)
     
     elif curr_direction == 'E':
         index-=2
         curr_direction = left_turn_command(index, name, x,y)
-        x,y = forward_command(curr_direction, name, 1, False, False, x,y)
+        x,y = forward_command(curr_direction, name, steps, False, False, x,y)
         
     elif curr_direction == 'W':
-        x,y = forward_command(curr_direction, name, 1, False, False, x,y)
+        x,y = forward_command(curr_direction, name, steps, False, False, x,y)
         
     elif curr_direction == 'S':
         index+=1
         curr_direction = right_turn_command(curr_direction, name, x,y)
-        x,y = forward_command(direction, name, 1, False, False, x,y)
+        x,y = forward_command(curr_direction, name, steps, False, False, x,y)
     
     return index, curr_direction, x, y
     
 
 def solve_right(direction, name, index, x,y):
-    
+    steps = 50
     curr_direction = direction
     
     if curr_direction == 'N':
         index+=1
         curr_direction = right_turn_command(index,name,x,y)
-        x,y = forward_command(direction, name, 5, False, False, x,y)
+        x,y = forward_command(curr_direction, name, steps, False, False, x,y)
     
     elif curr_direction == 'E':
-        x,y = forward_command(curr_direction, name, 5, False, False, x,y)
+        x,y = forward_command(curr_direction, name, steps, False, False, x,y)
         
     elif curr_direction == 'W':
         index+=2
         curr_direction = right_turn_command(index, name, x,y)
-        x,y = forward_command(curr_direction, name, 5, False, False, x,y)
+        x,y = forward_command(curr_direction, name, steps, False, False, x,y)
         
     elif curr_direction == 'S':
         index-=1
         curr_direction = left_turn_command(curr_direction, name, x,y)
-        x,y = forward_command(direction, name, 5, False, False, x,y)
+        x,y = forward_command(curr_direction, name, steps, False, False, x,y)
     
     return index, curr_direction, x, y
     
 
 def maze_runner(origin_point,direction, name, grid, goto,index):
     
-    start = (24,12) ## middle of obstacle grid
-    x,y = origin_point
+    start = (79,39) ## middle of obstacle grid
+    x,y = (0,0)
+    
     if goto == '':
         end = obstacles.get_edges('top')
         goto = 'top'
     end = obstacles.get_edges(goto)
+    solved = False
     instructions = maze_solver.get_instructions(grid, start,end)
+    if instructions != []:
+        solved = True
+        print(f"{name} starting maze run..")
     curr_direction = direction
     
-    while instructions != [] or check_coordinates_in_range(x,y):
+    index = 0
+    
+    
+    while solved:
+        if index not in range(-3,4):
+            index = 0
+            
+        if instructions == []:
+            solved = False
+            
+        if goto == 'top' or goto == 'bottom':
+            if y == -200 or y == 200 or x == -100:
+                break
+            
+        elif goto == 'left' or goto == 'right':
+            if x == -100 or x == 100:
+                break
+            
+       
+
         if instructions[0] == "Up":
             index, curr_direction, x,y = solve_up(curr_direction, name, index, x,y)
         elif instructions[0] == 'Down':
@@ -136,7 +164,10 @@ def maze_runner(origin_point,direction, name, grid, goto,index):
         elif instructions[0] == 'Right':
             index, curr_direction, x,y = solve_right(curr_direction, name, index, x,y)
             
-    print(f"I am at the {goto} edge.")
+        instructions.pop(0)
+    
+    if solved:    
+        print(f"I am at the {goto} edge.")
     
     return curr_direction, index
         
@@ -228,7 +259,7 @@ def update_x_negative_axis(name,number_of_steps, x,y):
 
 def check_coordinates_in_range(x,y):
     """ Checks if coordinates are in valid range. """
-    if x in range(-100,101) and y in range(-200,201): return True
+    if x in range(-100,100) and y in range(-200,201): return True
     return False
 
 
