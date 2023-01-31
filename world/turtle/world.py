@@ -44,7 +44,7 @@ def name_turtle(name):
     game_window.title(name)
     
 
-def maze_runner(direction,name,grid, goto):
+def maze_runner(start,direction,name,grid, goto, index):
     
     steps = 0
     if goto == '':
@@ -71,7 +71,7 @@ def maze_runner(direction,name,grid, goto):
 
     if instructions != []:
         
-        print(f"{name} starting maze run..")
+        print("starting maze run..")
         while instructions != []:
             t.pd()
             t.pencolor("yellow")
@@ -167,9 +167,9 @@ def maze_runner(direction,name,grid, goto):
             instructions.pop(0)
             
         print(f"I am at the {goto} edge")
-        return True
+        return curr_direction, index
     
-    return False
+    return curr_direction, index
 
 
 def generate_obstacles():
@@ -189,8 +189,8 @@ def generate_obstacles():
             jimmy.begin_fill()
             for j in range(4):
                 jimmy.pd()
-                jimmy.fd(4) ## change this to 20 if running maze
-                jimmy.lt(90) ## change to rt if running maze
+                jimmy.fd(20) ## change this to 20 if running maze
+                jimmy.rt(90) ## change to rt if running maze
                 
             jimmy.end_fill()
             

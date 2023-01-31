@@ -1,7 +1,6 @@
 import sys
-import import_helper
 from maze import maze_solver
-from maze.hungry_joker_maze import get_edges
+# from maze.hungry_joker_maze import get_edges
 import maze
 
 if len(sys.argv) > 1:

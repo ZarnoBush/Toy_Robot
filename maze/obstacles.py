@@ -9,10 +9,10 @@ def get_edges(end):
 
     
     edges = {
-        "top" : (0,39),
-        "bottom" : (79,31),
-        "left" : (79,0),
-        "right" : (79, 31)
+        "top" : (0,99),
+        "bottom" : (99, 99),
+        "left" : (199,0),
+        "right" : (199, 199)
     }
     
     if end in edges:
@@ -22,8 +22,8 @@ def get_edges(end):
 
 def basic_blueprint():
     
-    r = HEIGHT//5
-    c = WIDTH//5
+    r = HEIGHT
+    c = WIDTH
     
     grid = [[0 for _ in range(c)] for _ in range(r)]
     
@@ -34,9 +34,9 @@ def basic_turtle_grid():
     
     turt = []
     
-    for i in range((HEIGHT//2), -(HEIGHT//2),-5):
+    for i in range((HEIGHT//2), -(HEIGHT//2),-1):
         turt_coods = []
-        for j in range(-(WIDTH//2), (WIDTH//2)+1,5):
+        for j in range(-(WIDTH//2), (WIDTH//2)+1):
             positions = (j,i)
             turt_coods.append(positions)
             
@@ -51,10 +51,10 @@ def basic_turtle_grid():
 
 def get_random_coods():
     to_obs = []
-    random_range = 1
+    random_range = random.randint(1,10)
     for _ in range(random_range):
-        x = 1
-        y = 1
+        x = random.randint(-100,101)
+        y = random.randint(-200,201)
         
         to_obs.append((x,y))
         

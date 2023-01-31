@@ -3,11 +3,11 @@ from maze import maze_solver
 import time
 
 if len(sys.argv) > 1:
-    if len(sys.argv) > 2:
+        
+    if "hungry_joker_maze" in sys.argv:
         import maze.hungry_joker_maze as obstacles
         
-    else:
-        import maze.obstacles as obstacles
+    import maze.obstacles as obstacles
 
 else:
     import maze.obstacles as obstacles
@@ -130,9 +130,10 @@ def maze_runner(origin_point,direction, name, grid, goto,index):
     end = obstacles.get_edges(goto)
     solved = False
     instructions = maze_solver.get_instructions(grid, start,end)
-    if instructions != []:
-        solved = True
-        print(f"{name} starting maze run..")
+    # if instructions != []:
+    #     solved = True
+    #     print(solved)
+    print("starting maze run..")
     curr_direction = direction
     
     index = 0
@@ -166,8 +167,8 @@ def maze_runner(origin_point,direction, name, grid, goto,index):
             
         instructions.pop(0)
     
-    if solved:    
-        print(f"I am at the {goto} edge.")
+    # if solved:    
+    print(f"I am at the {goto} edge.")
     
     return curr_direction, index
         
