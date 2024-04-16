@@ -224,8 +224,6 @@ def reset_obs():
 
 
 def get_obstacles():
-    
-    # - get algorithm to generate 1's in base grid, map to turt grid
     global obs_history
     grid, blueprint = map_blueprint_to_turtle_grid()
     

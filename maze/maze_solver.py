@@ -10,7 +10,7 @@ def keep_visited_history(visited, node):
 def is_valid_directions(direction, grid):
     
     
-    x,y = direction ## x is row, y is col
+    x,y = direction 
    
     valid = False
     
@@ -95,7 +95,7 @@ def generate_graph(grid, start, end):
 
 def solver(prev, end, start):
     
-    path_list = [] ## list of values from end point to start point
+    path_list = [] 
     path_list.append(end)
 
     while end != start:

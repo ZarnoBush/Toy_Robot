@@ -1,6 +1,5 @@
 import sys
 from maze import maze_solver
-# from maze.hungry_joker_maze import get_edges
 import maze
 
 if len(sys.argv) > 1:
@@ -8,16 +7,12 @@ if len(sys.argv) > 1:
         import world.turtle.world as world
         if len(sys.argv) == 2:
             world.draw_game_boundaries()
-        
-        # import maze.hungry_joker_maze as obstacles
-        # world.draw_game_boundaries()
+       
         
     else:
-        # import world.obstacles as obstacles
         import world.text.world as world
         
 else:
-    # import world.obstacles as obstacles
     import world.text.world as world
 
 
@@ -155,14 +150,6 @@ def run_commands():
     history = get_history()
     full_command = ''
     name = name_the_robot()
-    # if len(sys.argv) > 1:
-        
-    #     obstacles = import_helper.dynamic_import(f"maze.{sys.argv[2]}")
-    #     print(f"Loading {obstacles}")
-    #     obstacles.reset_obs()
-    #     if sys.argv[1] == 'turtle':
-    #         world.name_turtle(obstacles)
-    
     print(f"{name}: Loaded obstacles.")
     call_obstacles, grid = world.generate_obstacles()
     

@@ -1,5 +1,6 @@
+
 import turtle
-import turtle as jimmy
+import turtle as bush
 from turtle import Screen
 import sys
 import import_helper
@@ -8,7 +9,7 @@ import os
 if len(sys.argv) > 1:
     if len(sys.argv) > 2:
         if sys.argv[0] == 'robot.py':
-            import maze.hungry_joker_maze as obstacles
+            import maze.the_crazy_maze as obstacles
 
     else:
         import maze.obstacles as obstacles
@@ -178,21 +179,21 @@ def generate_obstacles():
 
     if len(coods) > 0:
         
-        jimmy.speed(0)
-        jimmy.ht()
-        jimmy.fillcolor('red')
+        bush.speed(0)
+        bush.ht()
+        bush.fillcolor('red')
         for i in coods:
             
             x,y = i
-            jimmy.pu()
-            jimmy.goto(x,y)
-            jimmy.begin_fill()
+            bush.pu()
+            bush.goto(x,y)
+            bush.begin_fill()
             for j in range(4):
-                jimmy.pd()
-                jimmy.fd(20) ## change this to 20 if running maze
-                jimmy.rt(90) ## change to rt if running maze
+                bush.pd()
+                bush.fd(20) 
+                bush.rt(90) 
                 
-            jimmy.end_fill()
+            bush.end_fill()
             
 
     

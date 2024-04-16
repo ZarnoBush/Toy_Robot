@@ -5,7 +5,7 @@ import time
 if len(sys.argv) > 1:
         
     if "hungry_joker_maze" in sys.argv:
-        import maze.hungry_joker_maze as obstacles
+        import maze.the_crazy_maze as obstacles
         
     import maze.obstacles as obstacles
 
